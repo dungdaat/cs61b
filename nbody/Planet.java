@@ -35,26 +35,35 @@ public class Planet {
 
 	public double calcForceExertedBy(Planet p2) {
 		double distSquare = Math.pow(calcDistance(p2), 2);
-		return constantG*this.mass*p2.mass/distSquare;
+		if (distSquare !=0) {
+			return constantG*this.mass*p2.mass/distSquare;
+		}
+		return 0;
 	}
 	/*calculate the force on x axis */
 	public double calcForceExertedByX(Planet p) {
 		double xDist = p.xxPos-this.xxPos;
+		if (xDist == 0) {
+			return 0;
+		}
 		return calcForceExertedBy(p)*xDist/calcDistance(p);
 	}
 	/*calculate the force on y axis */
-	public double calcForceExertedByY(Planet p) {
+	public double calcForceExertedByY(Planet p){
 		double yDist = p.yyPos-this.yyPos;
+		if (yDist == 0) {
+			return 0;
+		}
 		return calcForceExertedBy(p)*yDist/calcDistance(p);
 	}
-	public double calcNetForceExertedByX(Planet[] allPlanet) {
+	public double calcNetForceExertedByX(Planet[] allPlanet){
 		double netForceX = 0;
 		for (Planet p : allPlanet) {
 			netForceX += calcForceExertedByX(p);
 		}
 		return netForceX;
 	}
-	public double calcNetForceExertedByY(Planet[] allPlanet) {
+	public double calcNetForceExertedByY(Planet[] allPlanet){
 		double netForceY = 0;
 		for (Planet p : allPlanet) {
 			netForceY += calcForceExertedByY(p);
@@ -68,6 +77,9 @@ public class Planet {
 		this.yyVel += acceleY*tinyTime;
 		this.xxPos += this.xxVel*tinyTime;
 		this.yyPos += this.yyVel*tinyTime;
+	}
+	public void draw(){
+		StdDraw.picture(this.xxPos, this.yyPos, "images/" + this.imgFileName);
 	}
 }
 
