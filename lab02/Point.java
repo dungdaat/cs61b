@@ -1,4 +1,4 @@
-/** A point in 2D space. */
+
 public class Point {
 
     public double x;
