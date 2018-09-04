@@ -36,13 +36,19 @@ public class IntList {
     /** Returns [position]th value in this list. */
     public int get(int position) {
         // TODO: YOUR CODE HERE
-        return 0;
+        if (position == 0) {
+            return this.first;
+        }
+        if (this.rest == null) {
+            return 12345; /* it should error here, but i don't know how to raise an error */
+        }
+        return this.rest.get(position-1);
     }
 
     /** Returns the string representation of the list. */
     public String toString() {
         // TODO: YOUR CODE HERE
-        return null;
+        return this.first + " " + this.rest.toString();
     }
 
     /** Returns whether this and the given list or object are equal. */

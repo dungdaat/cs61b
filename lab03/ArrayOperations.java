@@ -8,7 +8,10 @@ public class ArrayOperations {
         if (pos < 0 || pos >= values.length) {
             return;
         }
-        // TODO: YOUR CODE HERE
+        for (int curr = pos; curr<values.length-1; curr++) {
+            values[curr] = values[curr+1];
+        }
+        values[values.length-1] = 0;
     }
 
     /**
@@ -20,6 +23,10 @@ public class ArrayOperations {
         if (pos < 0 || pos >= values.length) {
             return;
         }
-        // TODO: YOUR CODE HERE
+        
+        for (int curr = values.length-1; curr>=pos+1; curr--) {
+            values[curr] = values[curr-1];
+        }
+        values[pos] = newInt;
     }
 }
