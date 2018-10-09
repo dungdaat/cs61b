@@ -1,9 +1,7 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
-import java.util.Objects;
+import java.util.stream.Collectors;
+
 
 public class DBTable<T> {
     private List<T> entries;
@@ -18,6 +16,13 @@ public class DBTable<T> {
 
     public void add(T t) {
         entries.add(t);
+    }
+
+    @Override
+    public String toString() {
+        return "DBTable{" +
+                "entries=" + entries +
+                '}';
     }
 
     @Override
@@ -47,8 +52,8 @@ public class DBTable<T> {
      * results of the getter. Non-destructive.
      */
     public <R extends Comparable<R>> List<T> getOrderedBy(Function<T, R> getter) {
-        // TODO
-        return null;
+        List<T> result = this.entries.stream().sorted(Comparator.comparing(getter)).collect(Collectors.toList());
+        return result;
     }
 
     /**
@@ -56,8 +61,8 @@ public class DBTable<T> {
      * in the whitelist. Non-destructive.
      */
     public <R> List<T> getWhitelisted(Function<T, R> getter, Collection<R> whitelist) {
-        // TODO
-        return null;
+        List<T> result = this.entries.stream().filter(u -> whitelist.contains(getter.apply(u))).collect(Collectors.toList());
+        return result;
     }
 
     /**
@@ -66,8 +71,8 @@ public class DBTable<T> {
      * DBTable<String> names = table.getSubtableOf(User::getUsername);
      */
     public <R> DBTable<R> getSubtableOf(Function<T, R> getter) {
-        // TODO
-        return null;
+        DBTable<R> result = new DBTable(this.entries.stream().map(u -> getter.apply(u)).collect(Collectors.toList()));
+        return result;
     }
 
     public static void main(String[] args) {
@@ -81,5 +86,7 @@ public class DBTable<T> {
         DBTable<User> t = new DBTable<>(users);
         List<User> l = t.getOrderedBy(User::getName);
         l.forEach(System.out::println);
+        DBTable<String> names = t.getSubtableOf(User::getName);
+        names.entries.stream().forEach(System.out::println);
     }
 }
