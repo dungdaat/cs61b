@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Stack;
 
 /* An AmoebaFamily is a tree, where nodes are Amoebas, each of which can have
    any number of children. */
@@ -26,7 +28,17 @@ public class AmoebaFamily implements Iterable<AmoebaFamily.Amoeba> {
        the ROOT Amoeba printed first. Each Amoeba should be indented four spaces
        more than its parent. */
     public void print() {
-        // TODO: YOUR CODE HERE
+        System.out.println(root.name);
+        for(Amoeba child: root.children){
+            System.out.print("  ");
+            child.printHelper(2);
+        }
+    }
+    public static void printSpace(int i) {
+        for (int j = 0; j < i; j++){
+            System.out.print("  ");
+        }
+
     }
 
     /* Returns the length of the longest name in this AmoebaFamily. */
@@ -39,7 +51,9 @@ public class AmoebaFamily implements Iterable<AmoebaFamily.Amoeba> {
 
     /* Returns the longest name in this AmoebaFamily. */
     public String longestName() {
-        // TODO: YOUR CODE HERE
+        if(root != null) {
+            return root.longestNameHelper();
+        }
         return "";
     }
 
@@ -65,6 +79,9 @@ public class AmoebaFamily implements Iterable<AmoebaFamily.Amoeba> {
         family.addChild("Marge", "Hilary");
         System.out.println("Here's the family:");
         family.print();
+        String name = family.longestName();
+        System.out.println("  ");
+        System.out.println(name);
     }
 
     /* An Amoeba is a node of an AmoebaFamily. */
@@ -93,6 +110,7 @@ public class AmoebaFamily implements Iterable<AmoebaFamily.Amoeba> {
         }
 
         /* Adds child with name CHILDNAME to an Amoeba with name PARENTNAME. */
+
         public void addChildHelper(String parentName, String childName) {
             if (name.equals(parentName)) {
                 Amoeba child = new Amoeba(childName, this);
@@ -114,8 +132,24 @@ public class AmoebaFamily implements Iterable<AmoebaFamily.Amoeba> {
             }
             return maxLengthSeen;
         }
-
-        // TODO: ADD HELPER FUNCTIONS HERE
+        public void printHelper(int i){
+            System.out.println(name);
+            if (children != null){
+                for (Amoeba child : children){
+                    AmoebaFamily.printSpace(i);
+                    child.printHelper(i+1);
+                }
+            }
+        }
+        public String longestNameHelper(){
+            String longestName = name;
+            for (Amoeba a: children){
+                if (a.longestNameHelper().length() > longestName.length()){
+                    longestName = a.longestNameHelper();
+                }
+            }
+            return longestName;
+        }
 
     }
 
@@ -123,22 +157,31 @@ public class AmoebaFamily implements Iterable<AmoebaFamily.Amoeba> {
        AmoebaFamily. Complete enumeration of a family of N Amoebas should take
        O(N) operations. */
     public class AmoebaDFSIterator implements Iterator<Amoeba> {
-
+        private Stack<Amoeba> fringe = new Stack<Amoeba>();
         // TODO: IMPLEMENT THE CLASS HERE
 
         /* AmoebaDFSIterator constructor. Sets up all of the initial information
            for the AmoebaDFSIterator. */
-        public AmoebaDFSIterator() {
+        public AmoebaDFSIterator(Amoeba ancestor) {
+            if (ancestor != null) {
+                fringe.push(ancestor);
+            }
         }
 
         /* Returns true if there is a next element to return. */
         public boolean hasNext() {
-            return false;
+            return !fringe.isEmpty();
         }
 
         /* Returns the next element. */
         public Amoeba next() {
-            return null;
+            if(!hasNext()){
+                throw new NoSuchElementException("Stack run our of Ameoba");
+            }
+            Amoeba tobePop = fringe.pop();
+
+
+            return;
         }
 
         public void remove() {
@@ -155,8 +198,10 @@ public class AmoebaFamily implements Iterable<AmoebaFamily.Amoeba> {
 
         /* AmoebaBFSIterator constructor. Sets up all of the initial information
            for the AmoebaBFSIterator. */
-        public AmoebaBFSIterator() {
+        public AmoebaBFSIterator(Amoeba ancestor) {
+
         }
+
 
         /* Returns true if there is a next element to return. */
         public boolean hasNext() {

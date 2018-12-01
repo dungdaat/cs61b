@@ -46,15 +46,27 @@ public class IntList {
     }
 
     public void add(int value) {
-        return;
+        if(rest == null){
+            IntList added_term = of(value);
+            rest = added_term;
+        }
+        rest.add(value);
     }
 
     public int smallest() {
-        return -1;
+        int smallest = first;
+        while (rest != null) {
+            if (rest.first < smallest) {
+                smallest = rest.first;
+            }
+            rest = rest.rest;
+        }
+
+        return smallest;
     }
 
     public int squaredSum() {
-        return -1;
+        return first*first + rest.squaredSum();
     }
 
     public static void dSquareList(IntList L) {

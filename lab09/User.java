@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.Objects;
 
-public class User {
+public class User implements Comparable<User> {
 
     private static int nextId = 1;
 
@@ -52,6 +52,16 @@ public class User {
         this.email = email;
     }
 
+    public int compareTo(User o) {
+        if (this.id < o.id){
+            return -1;
+        }
+        if (this.id == o.id) {
+            return this.name.compareTo(o.name);
+        }
+        return 1;
+    }
+
     @Override
     public String toString() {
         return "User{" + "id=" + id + ", name=" + name + ", email=" + email + "}";
@@ -74,6 +84,7 @@ public class User {
             return Objects.equals(email, other.email);
         }
     }
+
 
     public static void main(String[] args) {
         User[] users = {

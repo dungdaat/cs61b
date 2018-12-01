@@ -1,6 +1,4 @@
 import java.util.Arrays;
-import java.util.Currency;
-import java.util.Objects;
 
 import static java.lang.Integer.min;
 
@@ -13,7 +11,7 @@ import static java.lang.Integer.min;
  * when this array is filled and the next element is smaller than the smallest number, is will be ignored
  * i still don't know the input typw
  */
-public class kLargest {
+public class kSmallest {
     /** find the cutpoint */
     public static int Devide (int[] orgi) {
         int x = orgi.length;
@@ -26,7 +24,7 @@ public class kLargest {
     int[] Input;
     int K;
 
-    public kLargest(int[] input, int k){
+    public kSmallest(int[] input, int k){
         Input = input;
         K = k;
     }
@@ -35,7 +33,7 @@ public class kLargest {
             return Input;
         }
          if (Input.length == 2) {
-            if (Input[1] < Input[0]){
+            if (Input[1] > Input[0]){
                 return Input;
             }
             int[] sol = {Input[1],Input[0]};
@@ -44,8 +42,8 @@ public class kLargest {
         int CutPoint = Devide(Input);
         int[] left = Arrays.copyOfRange(Input, 0, CutPoint+1);
         int[] right = Arrays.copyOfRange(Input, CutPoint+1, Input.length);
-        kLargest Left = new kLargest(left, K);
-        kLargest Right = new kLargest(right, K);
+        kSmallest Left = new kSmallest(left, K);
+        kSmallest Right = new kSmallest(right, K);
         int[] MLeft = Left.kMerge();
         int[] MRight = Right.kMerge();
         int i = 0;
@@ -53,7 +51,7 @@ public class kLargest {
         int Size = min(K,Input.length);
         int[] sol = new int[Size];
         while (i <=left.length-1 && j <= right.length-1 && i+j<Size) {
-            if (MLeft[i] < MRight[j]){
+            if (MLeft[i] >= MRight[j]){
                 sol[i+j] = MRight[j];   /** what if there are some numbers are equal? */
                 j++;
             }
@@ -76,6 +74,32 @@ public class kLargest {
         }
         return sol;
     }
+    public static int find(int k, int[]data) {
+        kSmallest wrap = new kSmallest(data,k);
+        int[] anw = wrap.kMerge();
+        return anw[k-1];
+    }
+    public static void main(String[] args) {
+        String data_path = "/Users/lidongda/3100_test/test2.txt";
+        In readData = new In(data_path);
+        int Size = 20000000;
+        int[] data = new int[Size];
+        /** this part read the data from an external path and construct a list with
+         * size 20,000,000 to hold this data.
+         */
+        for(int i = 0; i<Size; i++){
+            int num = readData.readInt();
+            data[i] = num;
+        }
+        long start = System.nanoTime();
+        int kth_s = find(9798866,data);
+        long end = System.nanoTime();
+        //System.out.println(start);
+        //System.out.println(end);
+        System.out.println(end-start);
+        System.out.println(kth_s);
+    }
 }
+
 
 

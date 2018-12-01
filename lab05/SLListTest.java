@@ -7,6 +7,8 @@ public class SLListTest {
     public void testSLListAdd() {
         SLList test1 = SLList.of(1, 3, 5);
         SLList test2 = new SLList();
+        SLList test3 = new SLList();
+
 
         test1.add(1, 2);
         test1.add(3, 4);
@@ -24,6 +26,7 @@ public class SLListTest {
         assertEquals(SLList.of(0, 1, 2, 3, 4, 5), test1);
     }
 
+
     @Test
     public void testSLListReverse() {
         SLList s0 = new SLList();
@@ -32,7 +35,10 @@ public class SLListTest {
 
         SLList s1 = SLList.of(1);
         s1.reverse();
-        assertEquals(s1, s1);
+
         assertEquals(SLList.of(1), s1);
+        SLList s12 = SLList.of(1,3);
+        s12.reverse();
+        assertEquals(SLList.of(3,1), s12);
     }
 }

@@ -20,4 +20,18 @@ public class GregorianDate extends Date {
     private static int getMonthLength(int m) {
         return MONTH_LENGTHS[m - 1];
     }
+
+    @Override
+    public Date nextDate(){
+        if(dayOfMonth==getMonthLength(month)) {
+            if(month==12){
+                Date nextday = new GregorianDate(year+1,1,1);
+                return nextday;
+            }
+            Date nextday = new GregorianDate(year,month+1,1);
+            return nextday;
+        }
+        Date nextday = new GregorianDate(year, month, dayOfMonth+1);
+        return nextday;   /** should the return type be Date or GregorianDate??*/
+    }
 }

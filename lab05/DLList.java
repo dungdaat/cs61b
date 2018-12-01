@@ -1,9 +1,49 @@
- /**
+import java.util.Objects;
+
+/**
   * A DLList is a list of integers. Like SLList, it also hides the terrible
   * truth of the nakedness within, but with a few additional optimizations.
   */
 public class DLList<BleepBlorp> {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DLList<?> dlList = (DLList<?>) o;
+        return size == dlList.size &&
+                Objects.equals(sentinel, dlList.sentinel);
+    }
+
+
+    @Override
+    public String toString() {
+        return "DLList{" +
+                "sentinel=" + sentinel +
+                ", size=" + size +
+                '}';
+    }
+
     private class Node {
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Node node = (Node) o;
+            return Objects.equals(prev, node.prev) &&
+                    Objects.equals(item, node.item) &&
+                    Objects.equals(next, node.next);
+        }
+
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "prev=" + prev +
+                    ", item=" + item +
+                    ", next=" + next +
+                    '}';
+        }
+
         public Node prev;
         public BleepBlorp item;
         public Node next;
@@ -58,44 +98,26 @@ public class DLList<BleepBlorp> {
 
     /** Adds item to the list at the specified index. */
     public void add(int index, BleepBlorp item) {
-        // TODO
+        Node p = sentinel;
+        while (index > 0) {
+            p = p.next;
+            index --;
+        }
+        Node n = new Node(item,p,p.next);
+        n.next.prev = n;
+        n.prev.next = n;
+        size += 1;
     }
 
     /** Remove the first instance of item from this list. */
     public void remove(BleepBlorp item) {
-        // TODO
-    }
-
-    @Override
-    public String toString() {
-        String result = "";
-        Node p = sentinel.next;
-        boolean first = true;
-        while (p != sentinel) {
-            if (first) {
-                result += p.item.toString();
-                first = false;
-            } else {
-                result += " " + p.item.toString();
-            }
+        Node p = sentinel;
+        while(!p.next.equals(item)) {
             p = p.next;
         }
-        return result;
+        p.next = p.next.next;
+        p.next.prev = p;
+        size -= 1;
     }
 
-    /** Returns whether this and the given list or object are equal. */
-    public boolean equals(Object o) {
-        DLList other = (DLList) o;
-        if (size() != other.size()) {
-            return false;
-        }
-        Node op = other.sentinel.next;
-        for (Node p = sentinel.next; p != sentinel; p = p.next) {
-            if (!(p.item.equals(op.item))) {
-                return false;
-            }
-            op = op.next;
-        }
-        return true;
-    }
 }

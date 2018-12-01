@@ -1,47 +1,44 @@
 import java.lang.System;
+import java.util.Arrays;
 
-public class quickFindKlrg {
+
+public class AS1_117020138 {
     private static class intL {
+        int inf = Integer.MAX_VALUE;
         int[] box;
         int Size;
 
         private intL(int k) {
             int[] Box = new int[k];
+            Arrays.fill(Box, inf);
             box = Box;
-            Size = 0;
         }
 
-        public intL insert(int i, int l, int r, intL Box) {
-            if (Size == 0) {
-                box[0] = i;
-                Size += 1;
-                return Box;
-            }
-            if (i >= box[box.length - 1] && Size == box.length) {    // what if there are negative number
-                return Box;
-            }
-            if (l == r) {
-                for (int j = box.length - 1; j > l + 1; j--) {
-                    box[j] = box[j - 1];
+        public intL insert(int i, intL Box) {
+            for (int j = 0; j < box.length; j++) {
+                if (box[j] <= i) {
+                    continue;
                 }
-                box[l + 1] = i;
-                if (Size < box.length) {
-                    Size += 1;
+                else {
+                    for(int k=j; k<box.length; k++){
+                        int temp = box[k];
+                        box[k] = i;
+                        i = temp;
+                    }
+                    break;
                 }
-                return Box;
             }
-            if (i > box[(l + r) / 2]) {
-                return insert(i, (l + r) / 2 + 1, r, Box);
-            }
-            return insert(i, l, (l + r) / 2, Box);
+            return Box;
         }
     }
 
+/** this part is the mothod modified from Quick Sort*/
     public static void swap(int[] arr, int i, int j) {
         int tmp = arr[i];
         arr[i] = arr[j];
         arr[j] = tmp;
     }
+    /** Return a partition index*/
     public static int KParti(int[] data, int p, int r){
         int pivot = data[r];
         int left = p;
@@ -69,6 +66,7 @@ public class quickFindKlrg {
         swap(data,right,r);
         return left;
     }
+/** I included this helper method to make the find function looks neat :)  all cases are handled here*/
     public static int helper(int[] data, int l, int r, int k){
         if(k == 1){
             int currS = data[l];
@@ -88,10 +86,10 @@ public class quickFindKlrg {
             }
             return currL;
         }
-        if (false) {
+        if (false) {     /** this part is intended to be modified */
             intL inSort = new intL(k);
             for (int i = l; i <=r; i++) {
-                inSort.insert(data[i], 0, inSort.Size - 1, inSort);
+                inSort.insert(data[i], inSort);
             }
             return inSort.box[k-1];
         }
@@ -106,8 +104,9 @@ public class quickFindKlrg {
     }
 
     public static int find(int k, int[]data) {
-       return helper(data,0,data.length-1,k);
+        return helper(data,0,data.length-1,k);
     }
+
     public static void main(String[] args){
         String data_path = "/Users/lidongda/3100_test/test2.txt";
         In readData = new In(data_path);
@@ -121,7 +120,7 @@ public class quickFindKlrg {
             data[i] = num;
         }
         long start = System.nanoTime();
-        int kth_s = find(9678945,data);
+        int kth_s = find(19999990,data);
         long end = System.nanoTime();
         //System.out.println(start);
         //System.out.println(end);
@@ -129,7 +128,6 @@ public class quickFindKlrg {
         System.out.println(kth_s);
     }
 }
-
 
 
 

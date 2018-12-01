@@ -1,9 +1,7 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.function.Function;
-import java.util.Objects;
+
+import static java.util.Collections.*;
 
 public class DBTable<T> {
     protected List<T> entries;
@@ -46,9 +44,11 @@ public class DBTable<T> {
      * getOrderedBy should create a new list ordered on the results of the
      * getter, without modifying the entries.
      */
-    public <R extends Comparable<R>> List<T> getOrderedBy(Function<T, R> getter) {
-        // TODO
-        return null;
+    public  <R extends Comparable<R>> List<T> getOrderedBy(Function<T, R> getter) {
+        List<T> Ordered = getEntries();
+        Collections.sort(Ordered, Comparator.comparing(getter)); /** very interesting question, i should practice more about the usage of comparator
+         the lambda expression can be simplified by using Comparator.comparing(the function) */
+        return Ordered;
     }
 
     public static void main(String[] args) {
@@ -60,7 +60,8 @@ public class DBTable<T> {
                 new User(1, "Catherine", "")
                 );
         DBTable<User> t = new DBTable<>(users);
-        List<User> l = t.getOrderedBy(User::getName);
+        List<User> l = t.getOrderedBy(User::getEmail);
         l.forEach(System.out::println);
     }
 }
+

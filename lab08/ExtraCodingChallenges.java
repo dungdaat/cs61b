@@ -13,7 +13,8 @@ public class ExtraCodingChallenges {
      */
     public static String nearestDuplicate(String[] words) {
         int min = Integer.MAX_VALUE;
-        // TODO
+
+        // TODO  main idea:  construca a map max-heap map
         return null;
     }
 }

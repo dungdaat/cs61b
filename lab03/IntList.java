@@ -48,7 +48,7 @@ public class IntList {
     /** Returns the string representation of the list. */
     public String toString() {
         // TODO: YOUR CODE HERE
-        return this.first + " " + this.rest.toString();
+        return String.valueOf(this.first) + " " + this.rest.toString();
     }
 
     /** Returns whether this and the given list or object are equal. */

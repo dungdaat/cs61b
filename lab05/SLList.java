@@ -1,9 +1,48 @@
- /**
+import java.security.PKCS12Attribute;
+import java.util.Objects;
+
+/**
   * An SLList is a list of integers, which hides the terrible truth of the
   * nakedness within.
   */
 public class SLList {
+    @Override
+    public String toString() {
+        return "SLList{" +
+                "sentinel=" + sentinel +
+                ", size=" + size +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SLList slList = (SLList) o;
+        return size == slList.size &&
+                Objects.equals(sentinel, slList.sentinel);
+    }
+
     private static class IntNode {
+        @Override
+        public String toString() {
+            return "IntNode{" +
+                    "item=" + item +
+                    ", next=" + next +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            IntNode intNode = (IntNode) o;
+            return item == intNode.item &&
+                    Objects.equals(next, intNode.next);
+        }
+
+
+
         public int item;
         public IntNode next;
 
@@ -76,11 +115,35 @@ public class SLList {
 
     /** Adds x to the list at the specified index. */
     public void add(int index, int x) {
-        // TODO
+        IntNode p = sentinel;
+        if (index > size) {
+            index = size;
+        }
+        if (index == 0) {
+            IntNode insert = new IntNode(x,p.next);
+            p.next = insert;
+            size += 1;
+            return;
+        }
+        while (index > 0) {
+            p = p.next;
+            index -= 1;
+        }
+        IntNode inserted = new IntNode(x, p.next);
+        p.next = inserted;
+        size += 1;
     }
 
     /** Returns the reverse of this list. This method is destructive. */
     public void reverse() {
-        // TODO
+       IntNode p = sentinel;
+       int x = size;
+       for (int i = 0; i<x; i++) {
+           IntNode mid = new IntNode(this.get(x - 1), p.next);
+           p.next = mid;
+           p = p.next;
+       }
+       p.next = null;
+       size = x;
     }
 }

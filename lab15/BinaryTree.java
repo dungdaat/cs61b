@@ -16,21 +16,49 @@ public class BinaryTree<T> {
 
     /* Returns the height of the tree. */
     public int height() {
-        // TODO: YOUR CODE HERE
-        return 0;
+        if (root == null) {
+            return 0;
+        }
+        if (root.left == null && root.right == null) {
+            return 1;  /** useless */
+        }
+        BinaryTree<T> subL = new BinaryTree<T>(root.left);
+        BinaryTree<T> subR = new BinaryTree<T>(root.right);
+        return Math.max(subL.height(),subR.height())+1;
     }
 
     /* Returns true if the tree's left and right children are the same height
        and are themselves completely balanced. */
     public boolean isCompletelyBalanced() {
-        // TODO: YOUR CODE HERE
-        return false;
+        if (root == null) {
+            return true;
+        }
+        BinaryTree<T> subL = new BinaryTree<T>(root.left);
+        BinaryTree<T> subR = new BinaryTree<T>(root.right);
+        return (subL.isCompletelyBalanced() &&
+                subR.isCompletelyBalanced() && subL.height() == subR.height());
     }
 
     /* Returns a BinaryTree representing the Fibonacci calculation for N. */
     public static BinaryTree<Integer> fibTree(int N) {
-        BinaryTree<Integer> result = new BinaryTree<Integer>();
-        return null;
+        if (N == 0){
+            TreeNode<Integer> root = new TreeNode<Integer>(0);
+            BinaryTree<Integer> result = new BinaryTree<Integer>(root);
+            return result;
+        }
+        if (N == 1){
+            TreeNode<Integer> root = new TreeNode<Integer>(1);
+            BinaryTree<Integer> result = new BinaryTree<Integer>(root);
+            return result;
+        }
+        TreeNode<Integer> root = new TreeNode<Integer>(N);
+        BinaryTree<Integer> result = new BinaryTree<Integer>(root);
+        BinaryTree<Integer> left = fibTree(N-1);
+        BinaryTree<Integer> right = fibTree(N-2);
+        result.root.left = left.root;
+        result.root.right = right.root;
+
+        return result;
     }
 
     /* Print the values in the tree in preorder: root value first, then values

@@ -17,4 +17,5 @@ public abstract class Date {
     public String toString() {
         return "" + year + "/" + month + "/" + dayOfMonth;
     }
+
 }
